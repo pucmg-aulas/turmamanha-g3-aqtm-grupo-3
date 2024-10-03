@@ -21,6 +21,6 @@ public class Registro {
         long minutos = tempoMilissegundos / (1000 * 60);
         long fracoes = (minutos + 14) / 15;
         double preco = fracoes * 4.0;
-        return Math.min(preco, Pagamento.LIMITE_PRECO);
+        return Math.min(preco, Pagamento.limitePreco);
     }
 }
