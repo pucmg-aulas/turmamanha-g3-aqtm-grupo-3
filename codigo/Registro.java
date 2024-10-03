@@ -13,13 +13,14 @@ public class Registro {
     }
 
     public long tempoUso() {
-
         return dataSaida.getTime() - dataEntrada.getTime();
     }
 
-    public double precoUso() {
-
-        return tempoUso() * 0.05;
+    public double calcularValor() {
+        long tempoMilissegundos = tempoUso();
+        long minutos = tempoMilissegundos / (1000 * 60);
+        long fracoes = (minutos + 14) / 15;
+        double preco = fracoes * 4.0;
+        return Math.min(preco, Pagamento.LIMITE_PRECO);
     }
-
 }
