@@ -1,8 +1,0 @@
-1;Regular;livre
-2;Idoso;livre
-3;VIP;livre
-4;PCD;livre
-5;Regular;livre
-6;VIP;livre
-7;Idoso;livre
-8;PCD;livre
