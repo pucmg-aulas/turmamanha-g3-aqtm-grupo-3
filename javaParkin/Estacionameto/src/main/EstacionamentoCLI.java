@@ -17,13 +17,13 @@ public class EstacionamentoCLI {
 
     public static void main(String[] args) {
         try {
-            File arquivoVagas = new File("data/vagas.txt");
+            File arquivoVagas = new File("txt/vagas.txt");
             if (!arquivoVagas.exists()) {
                 System.out.println("Arquivo de vagas não encontrado. Criando um novo arquivo.");
                 arquivoVagas.createNewFile();
             }
 
-            File arquivoClientes = new File("data/clientes.txt");
+            File arquivoClientes = new File("txt/clientes.txt");
             if (!arquivoClientes.exists()) {
                 System.out.println("Arquivo de clientes não encontrado. Criando um novo arquivo.");
                 arquivoClientes.createNewFile();
