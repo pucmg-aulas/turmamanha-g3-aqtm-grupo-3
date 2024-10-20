@@ -4,8 +4,8 @@ import models.*;
 import utils.ArquivoUtil;
 import utils.ClienteUtil;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -17,25 +17,29 @@ public class EstacionamentoCLI {
 
     public static void main(String[] args) {
         try {
-            File arquivoVagas = new File("data/vagas.txt");
+            // Verifica e cria os arquivos de vagas e clientes, se não existirem
+            File arquivoVagas = new File("codigo/data/vagas.txt");
             if (!arquivoVagas.exists()) {
                 System.out.println("Arquivo de vagas não encontrado. Criando um novo arquivo.");
                 arquivoVagas.createNewFile();
             }
 
-            File arquivoClientes = new File("data/clientes.txt");
+            File arquivoClientes = new File("codigo/data/clientes.txt");
             if (!arquivoClientes.exists()) {
                 System.out.println("Arquivo de clientes não encontrado. Criando um novo arquivo.");
                 arquivoClientes.createNewFile();
             }
 
-            List<Vaga> vagas = ArquivoUtil.lerVagasDeArquivo("data/vagas.txt");
-            clientes = ClienteUtil.lerClientesDeArquivo("data/clientes.txt");
+            // Ler vagas e clientes dos arquivos
+            List<Vaga> vagas = ArquivoUtil.lerVagasDeArquivo("codigo/data/vagas.txt");
+            clientes = lerClientesDoArquivo("codigo/data/clientes.txt");
 
+            // Adicionar as vagas lidas ao estacionamento
             for (Vaga vaga : vagas) {
                 estacionamento.adicionarVaga(vaga);
             }
 
+            // Loop principal de interação
             while (true) {
                 exibirMenu();
                 int opcao = scanner.nextInt();
@@ -55,6 +59,15 @@ public class EstacionamentoCLI {
                         gerarFatura();
                         break;
                     case 5:
+                        visualizarClientes();
+                        break;
+                    case 6:
+                        adicionarVeiculoClienteExistente();
+                        break;
+                    case 7:
+                        removerVeiculoCliente();
+                        break;
+                    case 8:
                         salvarClientes();
                         System.out.println("Saindo...");
                         return;
@@ -69,16 +82,21 @@ public class EstacionamentoCLI {
         }
     }
 
+    // Método para exibir o menu
     private static void exibirMenu() {
         System.out.println("Gestão de Estacionamento");
         System.out.println("1. Cadastrar cliente e veículo");
         System.out.println("2. Visualizar vagas disponíveis");
         System.out.println("3. Ocupação de vaga por veículo");
         System.out.println("4. Gerar fatura de um veículo");
-        System.out.println("5. Sair");
+        System.out.println("5. Visualizar clientes cadastrados");
+        System.out.println("6. Adicionar veículo a cliente existente");
+        System.out.println("7. Remover veículo de cliente existente");
+        System.out.println("8. Sair");
         System.out.print("Escolha uma opção: ");
     }
 
+    // Método para cadastrar cliente e veículo
     private static void cadastrarClienteVeiculo() {
         System.out.print("Nome do cliente: ");
         String nome = scanner.nextLine();
@@ -138,6 +156,7 @@ public class EstacionamentoCLI {
         }
     }
 
+    // Método para ocupar uma vaga
     private static void ocuparVaga() {
         System.out.print("Placa do veículo: ");
         String placa = scanner.nextLine();
@@ -146,7 +165,7 @@ public class EstacionamentoCLI {
         System.out.println("1. Regular");
         System.out.println("2. Idoso");
         System.out.println("3. VIP");
-        System.out.println("3. PCD");
+        System.out.println("4. PCD");
         int tipoVaga = scanner.nextInt();
         scanner.nextLine();
 
@@ -178,6 +197,7 @@ public class EstacionamentoCLI {
         System.out.println("Vaga " + vaga.getId() + " ocupada pelo veículo de placa " + placa);
     }
 
+    // Método para gerar fatura
     private static void gerarFatura() {
         try {
             System.out.print("Identificador da vaga: ");
@@ -203,9 +223,106 @@ public class EstacionamentoCLI {
         }
     }
 
+    // Método para visualizar os clientes cadastrados
+    private static void visualizarClientes() {
+        if (clientes.isEmpty()) {
+            System.out.println("Nenhum cliente cadastrado.");
+        } else {
+            for (Cliente cliente : clientes) {
+                System.out.println("Nome: " + cliente.getNome());
+                System.out.println("Identificador: " + cliente.getIdentificador());
+                System.out.println("Veículos: ");
+                for (Veiculo veiculo : cliente.getVeiculos()) {
+                    System.out.println(" - Placa: " + veiculo.getPlaca());
+                }
+                System.out.println();
+            }
+        }
+    }
+
+    // Método para adicionar um veículo a um cliente existente
+    private static void adicionarVeiculoClienteExistente() {
+        System.out.print("Digite o identificador do cliente: ");
+        String identificador = scanner.nextLine();
+
+        Cliente cliente = buscarClientePorIdentificador(identificador);
+        if (cliente != null) {
+            System.out.print("Placa do novo veículo: ");
+            String novaPlaca = scanner.nextLine();
+
+            Veiculo novoVeiculo = new Veiculo(novaPlaca, cliente);
+            cliente.adicionarVeiculo(novoVeiculo);
+            System.out.println("Veículo adicionado com sucesso!");
+        } else {
+            System.out.println("Cliente não encontrado.");
+        }
+    }
+
+    // Método para remover um veículo de um cliente existente
+    private static void removerVeiculoCliente() {
+        System.out.print("Digite o identificador do cliente: ");
+        String identificador = scanner.nextLine();
+
+        Cliente cliente = buscarClientePorIdentificador(identificador);
+        if (cliente != null) {
+            System.out.print("Placa do veículo a ser removido: ");
+            String placa = scanner.nextLine();
+
+            boolean removido = cliente.removerVeiculo(placa);
+            if (removido) {
+                System.out.println("Veículo removido com sucesso!");
+            } else {
+                System.out.println("Veículo não encontrado.");
+            }
+        } else {
+            System.out.println("Cliente não encontrado.");
+        }
+    }
+
+    // Método para buscar um cliente pelo identificador
+    private static Cliente buscarClientePorIdentificador(String identificador) {
+        for (Cliente cliente : clientes) {
+            if (cliente.getIdentificador().equals(identificador)) {
+                return cliente;
+            }
+        }
+        return null;
+    }
+
+    // Método para ler os clientes do arquivo
+    private static List<Cliente> lerClientesDoArquivo(String caminhoArquivo) throws IOException {
+        List<Cliente> clientes = new ArrayList<>();
+        BufferedReader reader = new BufferedReader(new FileReader(caminhoArquivo));
+        String linha;
+
+        while ((linha = reader.readLine()) != null) {
+            String[] dadosCliente = linha.split(";");
+            String nome = dadosCliente[0];
+            String identificador = dadosCliente[1];
+
+            Cliente cliente = new Cliente(nome, identificador);
+            for (int i = 2; i < dadosCliente.length; i++) {
+                Veiculo veiculo = new Veiculo(dadosCliente[i], cliente);
+                cliente.adicionarVeiculo(veiculo);
+            }
+
+            clientes.add(cliente);
+        }
+
+        reader.close();
+        return clientes;
+    }
+
+    // Método para salvar os clientes no arquivo
     private static void salvarClientes() {
-        try {
-            ClienteUtil.salvarClientesEmArquivo("data/clientes.txt", clientes);
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("codigo/data/clientes.txt"))) {
+            for (Cliente cliente : clientes) {
+                writer.write(cliente.getNome() + ";" + cliente.getIdentificador());
+                for (Veiculo veiculo : cliente.getVeiculos()) {
+                    writer.write(";" + veiculo.getPlaca());
+                }
+                writer.newLine();
+            }
             System.out.println("Dados dos clientes salvos com sucesso.");
         } catch (IOException e) {
             System.out.println("Erro ao salvar os dados dos clientes.");

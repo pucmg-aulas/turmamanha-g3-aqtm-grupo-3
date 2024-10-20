@@ -29,4 +29,15 @@ public class Cliente {
     public void adicionarVeiculo(Veiculo veiculo) {
         veiculos.add(veiculo);
     }
+
+    // Novo método para remover um veículo pela placa
+    public boolean removerVeiculo(String placa) {
+        for (Veiculo veiculo : veiculos) {
+            if (veiculo.getPlaca().equalsIgnoreCase(placa)) {
+                veiculos.remove(veiculo);
+                return true; // Veículo removido com sucesso
+            }
+        }
+        return false; // Veículo não encontrado
+    }
 }
