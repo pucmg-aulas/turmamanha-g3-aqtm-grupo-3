@@ -8,6 +8,7 @@ Nosso projeto tem como objetivo desenvolver um sistema de software para uma empr
 * Carlos Magno Ferreira Silva
 * João Gabriel Maia da Costa
 * Davi Vinicius Barbosa de Oliveira
+* Heleno Junior Fernandes Vilaça
 
 
 ## Professor responsável 
