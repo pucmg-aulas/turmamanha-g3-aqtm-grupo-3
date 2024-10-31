@@ -46,30 +46,43 @@ public class EstacionamentoCLI {
 
                 switch (opcao) {
                     case 1:
-                        cadastrarClienteVeiculo();
-                        break;
-                    case 2:
-                        exibirVagasDisponiveis();
-                        break;
-                    case 3:
-                        ocuparVaga();
-                        break;
-                    case 4:
-                        gerarFatura();
-                        break;
-                    case 5:
-                        visualizarClientes();
-                        break;
-                    case 6:
-                        editarVeiculoDeCliente();
-                        break;
-                    case 7:
-                        visualizarHistoricoReservas();
-                        break;
-                    case 8:
-                        salvarClientes();
-                        System.out.println("Saindo...");
-                        return;
+                    exibirVagasDisponiveis();
+                    break;
+                case 2:
+                    ocuparVaga();
+                    break;
+                case 3:
+                    gerarFatura();
+                    break;
+                case 4:
+                    cadastrarClienteVeiculo();
+                    break;
+                case 5:
+                    editarVeiculoDeCliente();
+                    break;
+                case 6:
+                    visualizarClientes();
+                    break;
+                case 7:
+                    exibirValorTotalArrecadado();
+                    break;
+                case 8:
+                    System.out.print("Digite o mês (1-12): ");
+                    int mes = scanner.nextInt();
+                    System.out.print("Digite o ano: ");
+                    int ano = scanner.nextInt();
+                    estacionamentoController.exibirValorArrecadadoMes(mes, ano);
+                    break;
+                case 9:
+                    System.out.print("Digite o mês (1-12): ");
+                    int mesRanking = scanner.nextInt();
+                    System.out.print("Digite o ano: ");
+                    int anoRanking = scanner.nextInt();
+                    estacionamentoController.exibirRankingClientesMes(mesRanking, anoRanking);
+                    break;
+                case 10:
+                    System.out.println("Saindo do sistema...");
+                    break;
                     default:
                         System.out.println("Opção inválida. Tente novamente.");
                 }
@@ -83,14 +96,16 @@ public class EstacionamentoCLI {
 
     private static void exibirMenu() {
         System.out.println("Gestão de Estacionamento");
-        System.out.println("1. Cadastrar cliente e veículo");
-        System.out.println("2. Visualizar vagas disponíveis");
-        System.out.println("3. Ocupação de vaga por veículo");
-        System.out.println("4. Gerar fatura de um veículo");
-        System.out.println("5. Visualizar clientes cadastrados");
-        System.out.println("6. Editar veículo a cliente");
-        System.out.println("7. Ver histórico de reservas");
-        System.out.println("8. Sair");
+        System.out.println("1. Exibir vagas disponíveis");
+        System.out.println("2. Ocupar vaga");
+        System.out.println("3. Gerar fatura");
+        System.out.println("4. Cadastrar cliente/veículo");
+        System.out.println("5. Editar veículo de cliente");
+        System.out.println("6. Visualizar clientes");
+        System.out.println("7. Exibir valor total arrecadado");
+        System.out.println("8. Exibir valor arrecadado em um mês específico");
+        System.out.println("9. Exibir ranking de clientes por arrecadação em um mês");
+        System.out.println("10. Sair");
         System.out.print("Escolha uma opção: ");
     }
 
@@ -403,6 +418,65 @@ public class EstacionamentoCLI {
             writer.newLine();
         } catch (IOException e) {
             System.out.println("Erro ao salvar o registro no arquivo: " + e.getMessage());
+        }
+    }
+
+    
+    // Função para exibir o valor arrecadado em um determinado mês e ano
+    public void exibirValorArrecadadoMes(int mes, int ano) {
+        double valorTotalMes = 0.0;
+        try (BufferedReader reader = new BufferedReader(new FileReader("codigo/data/Registro.txt"))) {
+            String linha;
+            while ((linha = reader.readLine()) != null) {
+                if (linha.contains("Valor: R$") && linha.contains("Entrada: " + ano + "-" + String.format("%02d", mes))) {
+                    String[] partes = linha.split("Valor: R\\$ ");
+                    valorTotalMes += Double.parseDouble(partes[1]);
+                }
+            }
+            System.out.println("Valor arrecadado em " + Month.of(mes) + "/" + ano + ": R$ " + valorTotalMes);
+        } catch (IOException e) {
+            System.out.println("Erro ao ler o arquivo de registros: " + e.getMessage());
+        }
+    }
+
+    // Função para exibir o ranking dos clientes que mais geraram arrecadação em um mês específico
+    public void exibirRankingClientesMes(int mes, int ano) {
+        Map<String, Double> clienteArrecadacao = new HashMap<>();
+        try (BufferedReader readerRegistros = new BufferedReader(new FileReader("codigo/data/Registro.txt"));
+             BufferedReader readerClientes = new BufferedReader(new FileReader("codigo/data/Clientes.txt"))) {
+
+            // Carregar ID e nome dos clientes em um mapa
+            Map<String, String> mapaClientes = readerClientes.lines()
+                    .map(linha -> linha.split(";"))
+                    .collect(Collectors.toMap(
+                        partes -> partes[1], 
+                        partes -> partes[0])
+                    );
+
+            // Processar arrecadação por cliente para o mês e ano especificados
+            String linha;
+            while ((linha = readerRegistros.readLine()) != null) {
+                if (linha.contains("Valor: R$") && linha.contains("Entrada: " + ano + "-" + String.format("%02d", mes))) {
+                    String[] partes = linha.split(", ");
+                    String idCliente = partes[0].split(": ")[1];
+                    double valor = Double.parseDouble(partes[partes.length - 1].split("R\\$ ")[1]);
+                    clienteArrecadacao.put(idCliente, clienteArrecadacao.getOrDefault(idCliente, 0.0) + valor);
+                }
+            }
+
+            // Ordenar por valor arrecadado e exibir o ranking
+            List<Map.Entry<String, Double>> ranking = clienteArrecadacao.entrySet()
+                    .stream()
+                    .sorted((a, b) -> Double.compare(b.getValue(), a.getValue()))
+                    .collect(Collectors.toList());
+
+            System.out.println("Ranking de arrecadação dos clientes em " + Month.of(mes) + "/" + ano + ":");
+            for (Map.Entry<String, Double> entrada : ranking) {
+                String nomeCliente = mapaClientes.getOrDefault(entrada.getKey(), "Cliente Desconhecido");
+                System.out.printf("Cliente: %s (ID: %s), Total Arrecadado: R$ %.2f%n", nomeCliente, entrada.getKey(), entrada.getValue());
+            }
+        } catch (IOException e) {
+            System.out.println("Erro ao ler o arquivo de registros ou clientes: " + e.getMessage());
         }
     }
 }

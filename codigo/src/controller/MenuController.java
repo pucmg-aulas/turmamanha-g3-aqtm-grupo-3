@@ -26,11 +26,14 @@ public class MenuController {
             System.out.println("4. Cadastrar cliente/veículo");
             System.out.println("5. Editar veículo de cliente");
             System.out.println("6. Visualizar clientes");
-            System.out.println("7. Sair");
+            System.out.println("7. Exibir valor total arrecadado");
+            System.out.println("8. Exibir valor arrecadado em um mês específico");
+            System.out.println("9. Exibir ranking de clientes por arrecadação em um mês");
+            System.out.println("10. Sair");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
             scanner.nextLine();
-
+    
             switch (opcao) {
                 case 1:
                     exibirVagasDisponiveis();
@@ -51,12 +54,29 @@ public class MenuController {
                     clienteController.visualizarClientes();
                     break;
                 case 7:
+                    estacionamentoController.exibirValorTotalArrecadado();
+                    break;
+                case 8:
+                    System.out.print("Digite o mês (1-12): ");
+                    int mes = scanner.nextInt();
+                    System.out.print("Digite o ano: ");
+                    int ano = scanner.nextInt();
+                    estacionamentoController.exibirValorArrecadadoMes(mes, ano);
+                    break;
+                case 9:
+                    System.out.print("Digite o mês (1-12): ");
+                    int mesRanking = scanner.nextInt();
+                    System.out.print("Digite o ano: ");
+                    int anoRanking = scanner.nextInt();
+                    estacionamentoController.exibirRankingClientesMes(mesRanking, anoRanking);
+                    break;
+                case 10:
                     System.out.println("Saindo do sistema...");
                     break;
                 default:
                     System.out.println("Opção inválida.");
             }
-        } while (opcao != 7);
+        } while (opcao != 10);
     }
 
     private void exibirVagasDisponiveis() {

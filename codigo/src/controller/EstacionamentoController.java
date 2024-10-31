@@ -7,6 +7,11 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.nio.file.*;
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class EstacionamentoController {
     private Estacionamento estacionamento;
@@ -145,6 +150,81 @@ public class EstacionamentoController {
             writer.newLine();
         } catch (IOException e) {
             System.out.println("Erro ao salvar o registro no arquivo: " + e.getMessage());
+        }
+    }
+
+    // Função para obter o valor total arrecadado no estacionamento
+    public void exibirValorTotalArrecadado() {
+        double valorTotal = 0.0;
+        try (BufferedReader reader = new BufferedReader(new FileReader("codigo/data/Registro.txt"))) {
+            String linha;
+            while ((linha = reader.readLine()) != null) {
+                if (linha.contains("Valor: R$")) {
+                    String[] partes = linha.split("Valor: R\\$ ");
+                    valorTotal += Double.parseDouble(partes[1]);
+                }
+            }
+            System.out.println("Valor total arrecadado no estacionamento: R$ " + valorTotal);
+        } catch (IOException e) {
+            System.out.println("Erro ao ler o arquivo de registros: " + e.getMessage());
+        }
+    }
+
+    // Função para exibir o valor arrecadado em um determinado mês e ano
+    public void exibirValorArrecadadoMes(int mes, int ano) {
+        double valorTotalMes = 0.0;
+        try (BufferedReader reader = new BufferedReader(new FileReader("codigo/data/Registro.txt"))) {
+            String linha;
+            while ((linha = reader.readLine()) != null) {
+                if (linha.contains("Valor: R$") && linha.contains("Entrada: " + ano + "-" + String.format("%02d", mes))) {
+                    String[] partes = linha.split("Valor: R\\$ ");
+                    valorTotalMes += Double.parseDouble(partes[1]);
+                }
+            }
+            System.out.println("Valor arrecadado em " + Month.of(mes) + "/" + ano + ": R$ " + valorTotalMes);
+        } catch (IOException e) {
+            System.out.println("Erro ao ler o arquivo de registros: " + e.getMessage());
+        }
+    }
+
+    // Função para exibir o ranking dos clientes que mais geraram arrecadação em um mês específico
+    public void exibirRankingClientesMes(int mes, int ano) {
+        Map<String, Double> clienteArrecadacao = new HashMap<>();
+        try (BufferedReader readerRegistros = new BufferedReader(new FileReader("codigo/data/Registro.txt"));
+             BufferedReader readerClientes = new BufferedReader(new FileReader("codigo/data/Clientes.txt"))) {
+
+            // Carregar ID e nome dos clientes em um mapa
+            Map<String, String> mapaClientes = readerClientes.lines()
+                    .map(linha -> linha.split(";"))
+                    .collect(Collectors.toMap(
+                        partes -> partes[1], 
+                        partes -> partes[0])
+                    );
+
+            // Processar arrecadação por cliente para o mês e ano especificados
+            String linha;
+            while ((linha = readerRegistros.readLine()) != null) {
+                if (linha.contains("Valor: R$") && linha.contains("Entrada: " + ano + "-" + String.format("%02d", mes))) {
+                    String[] partes = linha.split(", ");
+                    String idCliente = partes[0].split(": ")[1];
+                    double valor = Double.parseDouble(partes[partes.length - 1].split("R\\$ ")[1]);
+                    clienteArrecadacao.put(idCliente, clienteArrecadacao.getOrDefault(idCliente, 0.0) + valor);
+                }
+            }
+
+            // Ordenar por valor arrecadado e exibir o ranking
+            List<Map.Entry<String, Double>> ranking = clienteArrecadacao.entrySet()
+                    .stream()
+                    .sorted((a, b) -> Double.compare(b.getValue(), a.getValue()))
+                    .collect(Collectors.toList());
+
+            System.out.println("Ranking de arrecadação dos clientes em " + Month.of(mes) + "/" + ano + ":");
+            for (Map.Entry<String, Double> entrada : ranking) {
+                String nomeCliente = mapaClientes.getOrDefault(entrada.getKey(), "Cliente Desconhecido");
+                System.out.printf("Cliente: %s (ID: %s), Total Arrecadado: R$ %.2f%n", nomeCliente, entrada.getKey(), entrada.getValue());
+            }
+        } catch (IOException e) {
+            System.out.println("Erro ao ler o arquivo de registros ou clientes: " + e.getMessage());
         }
     }
 }
