@@ -6,7 +6,6 @@ import utils.ClienteUtil;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.Month;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -68,15 +67,6 @@ public class EstacionamentoCLI {
                         visualizarHistoricoReservas();
                         break;
                     case 8:
-                        calcularReceitaTotal();
-                        break;
-                    case 9:
-                        calcularReceitaPorMes();
-                        break;
-                    case 10:
-                        calcularMediaReceitaPorUso();
-                        break;
-                    case 11:
                         salvarClientes();
                         System.out.println("Saindo...");
                         return;
@@ -98,12 +88,9 @@ public class EstacionamentoCLI {
         System.out.println("3. Ocupação de vaga por veículo");
         System.out.println("4. Gerar fatura de um veículo");
         System.out.println("5. Visualizar clientes cadastrados");
-        System.out.println("6. Editar veículo de cliente");
+        System.out.println("6. Editar veículo a cliente");
         System.out.println("7. Ver histórico de reservas");
-        System.out.println("8. Calcular receita total");
-        System.out.println("9. Calcular receita de um mês específico");
-        System.out.println("10. Calcular média da receita por uso");
-        System.out.println("11. Sair");
+        System.out.println("8. Sair");
         System.out.print("Escolha uma opção: ");
     }
 
@@ -266,144 +253,8 @@ public class EstacionamentoCLI {
 
             vaga.desocupar();
         } catch (Exception e) {
-            System.out.println("Erro ao gerar fatura: " + e.getMessage());
+            System.out.println("Erro ao gerar a fatura: " + e.getMessage());
         }
-    }
-
-    private static void visualizarClientes() {
-        System.out.println("Clientes cadastrados:");
-        for (Cliente cliente : clientes) {
-            System.out.println("- " + cliente.getNome() + " (ID: " + cliente.getIdentificador() + ")");
-        }
-    }
-
-    private static void editarVeiculoDeCliente() {
-        System.out.print("ID do cliente: ");
-        String idCliente = scanner.nextLine();
-        Cliente cliente = buscarClientePorId(idCliente);
-
-        if (cliente == null) {
-            System.out.println("Cliente não encontrado.");
-            return;
-        }
-
-        System.out.print("Nova placa do veículo: ");
-        String novaPlaca = scanner.nextLine();
-
-        Veiculo veiculo = cliente.getVeiculos().stream().findFirst().orElse(null);
-        if (veiculo != null) {
-            veiculo.setPlaca(novaPlaca);
-            System.out.println("Veículo atualizado com sucesso!");
-        } else {
-            System.out.println("Cliente não possui veículos cadastrados.");
-        }
-
-        salvarClientes();
-    }
-
-    private static void visualizarHistoricoReservas() {
-        System.out.println("Histórico de reservas:");
-        // Implemente a visualização do histórico aqui, caso exista
-    }
-
-    private static void calcularReceitaTotal() {
-        double receitaTotal = 0;
-        try (BufferedReader br = new BufferedReader(new FileReader("codigo/data/registros.txt"))) {
-            String linha;
-            while ((linha = br.readLine()) != null) {
-                String[] partes = linha.split(", Valor: R$ ");
-                if (partes.length > 1) {
-                    receitaTotal += Double.parseDouble(partes[1].trim());
-                }
-            }
-            System.out.println("Receita total: R$ " + receitaTotal);
-        } catch (IOException e) {
-            System.out.println("Erro ao calcular receita total: " + e.getMessage());
-        }
-    }
-
-    private static void calcularReceitaPorMes() {
-        System.out.print("Mês (1-12): ");
-        int mes = scanner.nextInt();
-        scanner.nextLine();
-
-        double receitaMes = 0;
-        try (BufferedReader br = new BufferedReader(new FileReader("codigo/data/registros.txt"))) {
-            String linha;
-            while ((linha = br.readLine()) != null) {
-                String[] partes = linha.split(", ");
-                String dataStr = partes[2].split(": ")[1]; // Pega a data da linha
-                LocalDateTime data = LocalDateTime.parse(dataStr, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-
-                if (data.getMonthValue() == mes) {
-                    receitaMes += Double.parseDouble(partes[4].split(": R$ ")[1].trim());
-                }
-            }
-            System.out.println("Receita do mês " + Month.of(mes) + ": R$ " + receitaMes);
-        } catch (IOException e) {
-            System.out.println("Erro ao calcular receita do mês: " + e.getMessage());
-        }
-    }
-
-    private static void calcularMediaReceitaPorUso() {
-        int totalUso = 0;
-        double receitaTotal = 0;
-        try (BufferedReader br = new BufferedReader(new FileReader("codigo/data/registros.txt"))) {
-            String linha;
-            while ((linha = br.readLine()) != null) {
-                String[] partes = linha.split(", Valor: R$ ");
-                if (partes.length > 1) {
-                    receitaTotal += Double.parseDouble(partes[1].trim());
-                    totalUso++;
-                }
-            }
-            double mediaReceita = totalUso > 0 ? receitaTotal / totalUso : 0;
-            System.out.println("Média da receita por uso: R$ " + mediaReceita);
-        } catch (IOException e) {
-            System.out.println("Erro ao calcular média de receita por uso: " + e.getMessage());
-        }
-    }
-
-    private static void salvarClientes() {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("codigo/data/clientes.txt"))) {
-            for (Cliente cliente : clientes) {
-                bw.write(cliente.getNome() + "," + cliente.getIdentificador() + "\n");
-            }
-        } catch (IOException e) {
-            System.out.println("Erro ao salvar clientes: " + e.getMessage());
-        }
-    }
-
-    private static void salvarRegistroNoArquivo(String registro) {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("codigo/data/registros.txt", true))) {
-            bw.write(registro + "\n");
-        } catch (IOException e) {
-            System.out.println("Erro ao salvar registro: " + e.getMessage());
-        }
-    }
-
-    private static List<Cliente> lerClientesDoArquivo(String caminho) {
-        List<Cliente> clientes = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(caminho))) {
-            String linha;
-            while ((linha = br.readLine()) != null) {
-                String[] partes = linha.split(",");
-                Cliente cliente = new Cliente(partes[0], partes[1]);
-                clientes.add(cliente);
-            }
-        } catch (IOException e) {
-            System.out.println("Erro ao ler clientes do arquivo: " + e.getMessage());
-        }
-        return clientes;
-    }
-
-    private static Cliente buscarClientePorId(String idCliente) {
-        for (Cliente cliente : clientes) {
-            if (cliente.getIdentificador().equals(idCliente)) {
-                return cliente;
-            }
-        }
-        return null;
     }
 
     private static Cliente buscarClientePorPlaca(String placa) {
@@ -415,5 +266,143 @@ public class EstacionamentoCLI {
             }
         }
         return null;
+    }
+
+    private static void visualizarClientes() {
+        System.out.println("Clientes cadastrados:");
+        for (Cliente cliente : clientes) {
+            System.out.println("Cliente: " + cliente.getNome() + " (" + cliente.getIdentificador() + ")");
+            System.out.println("Veículos: ");
+            for (Veiculo veiculo : cliente.getVeiculos()) {
+                System.out.println("- " + veiculo.getPlaca());
+            }
+        }
+    }
+
+    private static void editarVeiculoDeCliente() {
+        System.out.print("Identificador do cliente: ");
+        String identificador = scanner.nextLine();
+
+        Cliente cliente = buscarClientePorIdentificador(identificador);
+        if (cliente != null) {
+            System.out.println("Escolha uma opção: ");
+            System.out.println("1. Adicionar veículo");
+            System.out.println("2. Remover veículo");
+            int opcao = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (opcao) {
+                case 1:
+
+                    System.out.print("Placa do novo veículo: ");
+                    String novaPlaca = scanner.nextLine();
+
+                    Veiculo novoVeiculo = new Veiculo(novaPlaca, cliente);
+                    cliente.adicionarVeiculo(novoVeiculo);
+
+                    System.out.println("Veículo adicionado com sucesso!");
+                    break;
+
+                case 2:
+
+                    System.out.print("Placa do veículo a ser removido: ");
+                    String placaRemover = scanner.nextLine();
+
+                    boolean removido = cliente.removerVeiculo(placaRemover);
+                    if (removido) {
+                        System.out.println("Veículo removido com sucesso!");
+                    } else {
+                        System.out.println("Veículo não encontrado.");
+                    }
+                    break;
+
+                default:
+                    System.out.println("Opção inválida.");
+                    return;
+            }
+
+            salvarClientes();
+        } else {
+            System.out.println("Cliente não encontrado.");
+        }
+    }
+
+    private static Cliente buscarClientePorIdentificador(String identificador) {
+        for (Cliente cliente : clientes) {
+            if (cliente.getIdentificador().equals(identificador)) {
+                return cliente;
+            }
+        }
+        return null;
+    }
+
+    private static void visualizarHistoricoReservas() {
+        System.out.print("Identificador do cliente: ");
+        String identificador = scanner.nextLine().trim();
+
+        try {
+            File arquivoRegistros = new File("codigo/data/registros.txt");
+            if (!arquivoRegistros.exists()) {
+                System.out.println("Arquivo de registros não encontrado.");
+                return;
+            }
+
+            BufferedReader reader = new BufferedReader(new FileReader(arquivoRegistros));
+            String linha;
+            boolean encontrouRegistros = false;
+
+            System.out.println("Histórico de reservas do cliente " + identificador + ":");
+            while ((linha = reader.readLine()) != null) {
+
+                String[] dados = linha.split(",");
+
+                String idCliente = dados[0].split(": ")[1].trim();
+
+                if (idCliente.equals(identificador)) {
+                    String placa = dados[1].split(": ")[1].trim();
+                    String entrada = dados[2].split(": ")[1].trim();
+                    String saida = dados[3].split(": ")[1].trim();
+                    String valorPago = dados[4].split(": ")[1].trim();
+
+                    System.out.println("Placa: " + placa + ", Entrada: " + entrada + ", Saída: " + saida
+                            + ", Valor pago: " + valorPago);
+                    encontrouRegistros = true;
+                }
+            }
+
+            if (!encontrouRegistros) {
+                System.out.println("Nenhuma reserva encontrada para este cliente.");
+            }
+
+            reader.close();
+        } catch (IOException e) {
+            System.out.println("Erro ao ler o arquivo de registros: " + e.getMessage());
+        }
+    }
+
+    private static List<Cliente> lerClientesDoArquivo(String filePath) {
+        try {
+            return ClienteUtil.lerClientesDeArquivo(filePath);
+        } catch (IOException e) {
+            System.out.println("Erro ao ler o arquivo de clientes: " + e.getMessage());
+            return new ArrayList<>();
+        }
+    }
+
+    private static void salvarClientes() {
+        try {
+            ClienteUtil.salvarClientesEmArquivo("codigo/data/clientes.txt", clientes);
+        } catch (IOException e) {
+            System.out.println("Erro ao salvar clientes no arquivo: " + e.getMessage());
+        }
+    }
+
+    private static void salvarRegistroNoArquivo(String registro) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("codigo/data/registros.txt", true))) {
+            writer.write(registro);
+            writer.newLine();
+        } catch (IOException e) {
+            System.out.println("Erro ao salvar o registro no arquivo: " + e.getMessage());
+        }
     }
 }
