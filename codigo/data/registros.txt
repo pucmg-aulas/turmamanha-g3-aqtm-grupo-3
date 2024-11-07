@@ -1,8 +1,0 @@
-ID Cliente: JG01, Placa: hlz-2264, Entrada: 2024-10-23 22:41:55, Saída: Pendente, Valor: Pendente
-ID Cliente: JG01, Placa: hlz-2264, Entrada: 2024-10-23T22:41:55.712376400, Saída: 2024-10-23 22:42:14, Valor: R$ 2.55
-ID Cliente: JG01, Placa: hlz-2264, Entrada: 2024-10-23 22:58:34, Saída: Pendente, Valor: Pendente
-ID Cliente: JG01, Placa: hlz-2264, Entrada: 2024-10-23T22:58:35.000064400, Saída: 2024-10-23 22:58:45, Valor: R$ 3.0
-ID Cliente: JG01, Placa: hlz-2264, Entrada: 2024-10-23 22:59:00, Saída: Pendente, Valor: Pendente
-ID Cliente: JG01, Placa: hlz-2264, Entrada: 2024-10-23T22:59:00.675037700, Saída: 2024-10-23 22:59:09, Valor: R$ 6.0
-ID Cliente: K01, Placa: iii-0i00, Entrada: 2024-10-23 23:26:49, Saída: Pendente, Valor: Pendente
-ID Cliente: K01, Placa: iii-0i00, Entrada: 2024-10-23T23:26:49.838238700, Saída: 2024-10-23 23:27:00, Valor: R$ 2.61
