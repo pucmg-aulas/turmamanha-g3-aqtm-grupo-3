@@ -28,6 +28,6 @@ Aqui contém todas as versões dos diagramas de classe criados pelo Grupo 3. Cad
 
 ## Diagrama de Classe 05
 
-![Diagrama de Classe 04](https://github.com/pucmg-aulas/turmamanha-g3-aqtm-grupo-3/raw/master/docs/Diagrmas-png/diagrama-5.png)
+![Diagrama de Classe 05](https://github.com/pucmg-aulas/turmamanha-g3-aqtm-grupo-3/raw/master/docs/Diagrmas-png/diagrama-5.png)
 
 ---
