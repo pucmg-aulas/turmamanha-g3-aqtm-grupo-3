@@ -3,69 +3,104 @@ Atualizado em 12/11/2024.
 
 ## Tarefas Pendentes
 
-### Sprint 1
+### Sprint 1 - Entrega 01
 
 | Tarefa                                                      | Responsável |
 | ----------------------------------------------------------- | ----------- |
-| 1. Criação do diagrama de classes inicial                   | João, Carlos, Kaio, Heleno, Victor, Davi     |
-| 2. Configuração do repositório no GitHub                    | João        |
-| 3. Implementação do sistema de cadastro de vagas            | Victor      |
-| 4. Implementação do cadastro de clientes                    | Victor      |
-| 5. Implementação do cadastro de veículos                    |    Victor         |
-| 6. Implementação de seleção e ocupação de vaga              |    Victor         |
-| 7. Implementação de cálculo de cobrança por tempo           |    João         |
-| 8. Testes iniciais das classes desenvolvidas                |    Joao         |
+| 1. Elaborar um diagrama de classes que atenda aos requisitos iniciais do sistema. |             |
+| 2. Preencher os dados corretamente no template do repositório GitHub do grupo.    |             |
 
 ----
 
-### Sprint 2
+### Sprint 1 - Entrega 02
 
 | Tarefa                                                      | Responsável |
 | ----------------------------------------------------------- | ----------- |
-| 1. Atualização do diagrama de classes com novos requisitos  | João        |
-| 2. Configuração do repositório no GitHub                    | João        |
-| 3. Implementação das funcionalidades para tipos de vagas (Regular, Idoso, PCD, VIP) | João/Victor |
-| 4. Implementação de regras específicas para cada tipo de vaga |       João      |
-| 5. Definição e implementação de testes unitários            | João        |
-| 6. Implementação de persistência de dados em arquivos texto | João/Victor |
-| 7. Atualização de testes para garantir novas funcionalidades |     João/Victor        |
-| 8. Documentação de regras de tarifação e descontos          |      João/Victor       |
+| 1. Atualizar o diagrama de classes considerando as ponderações do professor.     |             |
+| 2. Desenvolver o código inicial do projeto com base no diagrama atualizado.      |             |
 
 ----
 
-### Sprint 3
+### Sprint 2 - Novos Requisitos
 
 | Tarefa                                                      | Responsável |
 | ----------------------------------------------------------- | ----------- |
-| 1. Atualização do diagrama de classes com novos requisitos  | João        |
-| 2. Configuração do repositório no GitHub                    | João        |
-| 3. Reorganização do código para o padrão MVC                |         |
-| 4. Desenvolvimento da interface gráfica (Java Swing)        | João, Victor, Carlos |
-| 5. Implementação do histórico de uso do estacionamento para clientes identificados | Carlos |
-| 6. Implementação de filtros de histórico por datas          |             |
-| 7. Criação dos relatórios financeiros                       | Davi        |
-| 8. Implementação de visualização do valor total arrecadado  |             |
-| 9. Implementação de relatórios de arrecadação mensal        |             |
-| 10. Implementação do ranking de clientes por arrecadação    |             |
-| 11. Testes adicionais para funcionalidades de interface gráfica e relatórios |             |
+| 1. Incluir diferentes tipos de vagas no sistema:            |             |
+|    - Idosos: desconto de 15%.                               |             |
+|    - PCD (Pessoas com Deficiência): vagas maiores e desconto de 13%. |             |
+|    - VIP: vagas maiores, cobertas, próximas ao portão, com valor 20% mais caro que as vagas regulares. |             |
 
-----
-
-### Sprint 4
+#### Entregas da Sprint 2
 
 | Tarefa                                                      | Responsável |
 | ----------------------------------------------------------- | ----------- |
-| 1. Atualização do diagrama de classes com novos requisitos  | Victor      |
-| 2. Configuração do repositório no GitHub                    | Victor      |
-| 3. Implementação da persistência em banco de dados relacional (MySQL) | Victor      |
-| 4. Conexão do sistema com o banco de dados via JDBC         | Victor      |
-| 5. Criação e execução de consultas SQL complexas (com JOIN, GROUP BY, agregações) |             |
-| 6. Implementação do tratamento de exceções personalizadas    |             |
-| 7. Criação de classes de exceções para erros específicos de conexão, ocupação de vagas e dados inválidos |             |
-| 8. Implementação de persistência automática de dados no banco |             |
-| 9. Preparação e entrega do relatório técnico final          |       |
-| 10. Preparação da apresentação final                        |         |
-| 11. Atualização de documentação com consultas SQL e detalhes técnicos |             |
-| 12. Preparação e execução de testes finais para garantia de qualidade |             |
+| 1. Atualizar o diagrama de classes para incluir os novos requisitos.              |             |
+| 2. Implementar funcionalidades de classes e métodos:                             |             |
+|    - Diferenciação entre os tipos de vagas.                                       |             |
+|    - Aplicação das regras específicas para cada tipo.                             |             |
+| 3. Implementar pelo menos dois testes unitários por classe.                       |             |
+| 4. Definir o formato de arquivos para persistência de dados (leitura e escrita).  |             |
+| 5. Implementar métodos de leitura e escrita dos dados em arquivos texto.          |             |
+| 6. Preparar e realizar a apresentação do sistema.                                 |             |
 
 ----
+
+### Sprint 3 - Novos Requisitos
+
+| Tarefa                                                      | Responsável |
+| ----------------------------------------------------------- | ----------- |
+| 1. Implementar funcionalidades de histórico de uso:                           |             |
+|    - Histórico completo de uso do estacionamento.                              |             |
+|    - Histórico filtrado por datas de início e fim.                              |             |
+| 2. Implementar relatórios gerenciais:                                         |             |
+|    - Valor total arrecadado.                                                   |             |
+|    - Valor arrecadado em determinado mês.                                       |             |
+|    - Valor médio de cada utilização.                                           |             |
+|    - Ranking dos clientes que mais geraram arrecadação em um mês.              |             |
+
+#### Entregas da Sprint 3
+
+| Tarefa                                                      | Responsável |
+| ----------------------------------------------------------- | ----------- |
+| 1. Reorganizar o código para o padrão MVC (Model-View-Controller).            |             |
+| 2. Atualizar a interface do sistema utilizando Java Swing.                     |             |
+| 3. Garantir a persistência de dados em arquivos, conforme as sprints anteriores. |             |
+| 4. Preparar a apresentação do sistema.                                         |             |
+
+----
+
+### Sprint 4 - Release Final
+
+| Tarefa                                                      | Responsável |
+| ----------------------------------------------------------- | ----------- |
+| 1. Alterar a camada de persistência de dados para um Banco de Dados Relacional: |             |
+|    - Escolher e configurar o SGBD (MariaDB, MySQL, Postgres ou Oracle).         |             |
+|    - Utilizar JDBC para conexão entre a aplicação e o SGBD.                     |             |
+| 2. Criar e incluir no repositório:                                              |             |
+|    - Script de criação do banco de dados (DDL).                                 |             |
+|    - Script de população dos dados (INSERTs).                                   |             |
+| 3. Implementar pelo menos duas consultas SQL avançadas, utilizando:             |             |
+|    - JOIN.                                                                      |             |
+|    - GROUP BY.                                                                  |             |
+|    - Funções de agregação.                                                      |             |
+| 4. Atualizar a interface gráfica para exibir os resultados das consultas.       |             |
+| 5. Criar três classes de exceções personalizadas com tratamento adequado.       |             |
+
+#### Entregas da Sprint 4
+
+| Tarefa                                                      | Responsável |
+| ----------------------------------------------------------- | ----------- |
+| 1. Preparar a apresentação final, abordando:                                     |             |
+|    - Principais funcionalidades do sistema.                                      |             |
+|    - Arquitetura aplicada (MVC, Singleton).                                      |             |
+|    - Consultas SQL complexas realizadas.                                         |             |
+|    - Proposta de valor do sistema.                                               |             |
+| 2. Redigir o Relatório Técnico em PDF, contendo:                                 |             |
+|    - Visão geral das funcionalidades.                                            |             |
+|    - Detalhamento das consultas SQL.                                             |             |
+|    - Diagramas de classes e entidade-relacionamento.                             |             |
+|    - Decisões de projeto.                                                        |             |
+|    - Relatos de experiência pessoal dos integrantes.                             |             |
+|    - Principais desafios enfrentados.                                            |             |
+|    - Principais aprendizados.                                                    |             |
+|    - Propostas de melhorias no diagrama da solução.                              |             |
