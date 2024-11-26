@@ -1,7 +1,6 @@
 # Backlog do Projeto Gestão de Estacionamentos - Java Parkings
 Atualizado em 12/11/2024.
 
-## Tarefas Pendentes
 
 ### Sprint 1 - Entrega 01
 
