@@ -14,14 +14,13 @@ Este documento fornece as instruções de uso do sistema **Gestão de Estacionam
 
 1. **Estacionamento**:
    - Visualização de todas as vagas do estacionamento.
-   - As vagas são identificadas pelos tipos (IDO, PCD, R, VIP) seguidos por uma numeração (1...4), ex.: IDO1, PCD1, PCD2.
+   - As vagas são identificadas pelos tipos (E, I, R, V) seguidos por uma numeração (1...4), ex.: I1..., V1..., E1....
    - **Vagas verdes** estão disponíveis. Ao clicar em uma vaga verde, será disponibilizada a opção para estacionar pela placa do veículo. Caso a placa não seja encontrada, o sistema solicitará o cadastro do carro com o ID do cliente e a placa.
    - **Vagas vermelhas** indicam ocupação. Ao clicar em uma vaga vermelha, será disponibilizada a opção para registrar a saída e calcular o valor a ser pago.
 
 2. **Clientes**:
-   - **Cadastrar Cliente**: Cadastre o cliente com ID e nome. Clientes podem ser registrados como "Anônimos".
-   - **Listar Clientes**: Exibe uma tabela com todos os clientes e seus IDs.
-   - **Veículos**: Listagem de todos os veículos registrados, com a possibilidade de editar e visualizar detalhes de cada veículo associado aos clientes.
+   - **Cadastrar Cliente**: Cadastre o cliente com ID e nome. Clientes podem ser registrados como "anonimo".
+   - **Listar Clientes**: Exibe uma tabela com todos os clientes e seus IDs. Ao clicar em um cliente, disponibiliza a opção de ver seus carros cadastrados e se estão estacionados.
 
 3. **Faturamento**:
    - Selecione **Faturamento** para visualizar relatórios financeiros.
@@ -40,9 +39,15 @@ Este documento fornece as instruções de uso do sistema **Gestão de Estacionam
    - Acesse **Estacionamento**, no menu inicial. e localize a vaga que deseja desocupar.
    - Confirme para liberar a vaga e registrar a saída.
 
-3. **Cobrança e Tarifação**:
-   - O sistema calcula automaticamente o valor a ser cobrado (R$4 a cada 15 minutos, com valor máximo de R$50).
-   - Caso o cliente ocupe uma vaga com desconto (Idoso ou PCD) ou adicional (VIP), o sistema aplicará as tarifas corretas automaticamente.
+3. ### **Cobrança e Tarifação**
+- O sistema calcula automaticamente o valor a ser cobrado (R$4 a cada 15 minutos, com valor máximo de R$50).
+- Caso o cliente ocupe uma vaga regular (identificada com **R**), o valor permanece inalterado.
+- Para vagas com tarifas especiais:
+  - **Idosos (I)**: 15% de desconto.
+  - **PCD (E)**: 13% de desconto.
+  - **VIP (V)**: 20% de acréscimo no valor.
+- O sistema aplicará as tarifas corretas automaticamente com base no tipo de vaga ocupada.
+
 
 ## 4. Relatórios Financeiros
 
@@ -60,7 +65,6 @@ Este documento fornece as instruções de uso do sistema **Gestão de Estacionam
 
 1. **Persistência em Banco de Dados MySQL**:
    - Todos os dados do sistema são salvos no banco de dados MySQL, garantindo a persistência das informações de maneira segura e organizada.
-   - Você pode realizar backup e restauração dos dados através da seção **Manutenção** no sistema.
    - Certifique-se de que o MySQL está corretamente configurado e que as credenciais de acesso estão atualizadas no sistema.
 
 2. **Configuração de Conexão com o Banco de Dados**:
@@ -74,5 +78,6 @@ Este documento fornece as instruções de uso do sistema **Gestão de Estacionam
 
 O sistema exibe mensagens de erro claras caso ocorra algum problema, como:
 - ~~Exceções de Conexão: caso o sistema não consiga se conectar ao banco de dados.~~
+- ~~Exceções de Conexão: caso o banco de dados não esteja configurado corretamente.~~
 - ~~Exceções de Ocupação de Vagas: se tentar ocupar uma vaga já ocupada.~~
-- ~~Exceções de Dados Inválidos: caso sejam inseridos dados incorretos nos campos obrigatórios.~~
+- ~~Exceções de Dados Inválidos: caso sejam inseridos dados incorretos/ou ultrapasse a maxima nos campos obrigatórios.~~
