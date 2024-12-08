@@ -11,7 +11,6 @@ O projeto **Gestão de Estacionamentos Java Parkings** tem como objetivo desenvo
 - **Carlos Magno Ferreira Silva**
 - **João Gabriel Maia da Costa**
 - **Davi Vinicius Barbosa de Oliveira**
-- **Heleno Junior Fernandes Vilaça**
 - **Victor Rafael de Neiva Machado**
 
 ## Professor Responsável
