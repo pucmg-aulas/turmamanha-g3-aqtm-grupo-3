@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="lpm.view.SelecionarEstacionamento">
+  <grid id="27dc6" binding="panel1" default-binding="true" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="24" left="24" bottom="24" right="24"/>
+    <constraints>
+      <xy x="20" y="20" width="310" height="179"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <component id="31cbf" class="javax.swing.JButton" binding="btnCarregar">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Entrar"/>
+        </properties>
+      </component>
+      <component id="d806d" class="javax.swing.JComboBox" binding="comboBoxEstacionamentos">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="2746b" class="javax.swing.JLabel" binding="labelCarregarEstacionamento">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font size="16" style="1"/>
+          <text value="Selecione um  Estacionamento"/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+</form>
